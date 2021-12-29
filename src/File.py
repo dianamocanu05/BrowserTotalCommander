@@ -1,5 +1,5 @@
 import os
-
+import datetime
 
 class File:
     level = 0 #by default
@@ -34,3 +34,9 @@ class File:
 
     def set_level(self, level):
         self.level = level
+
+    def get_creation_date(self):
+        return datetime.datetime.fromtimestamp(os.path.getctime(self.path))
+
+    def get_permissions_mask(self):
+        return oct(os.stat(self.path).st_mode)

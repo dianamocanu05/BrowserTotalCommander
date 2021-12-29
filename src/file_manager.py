@@ -1,6 +1,6 @@
 import os
 from src.File import File
-
+from src.utils import create_html_list, get_printable_information
 working_dir = "../root"
 
 
@@ -57,4 +57,8 @@ def get_file_tree(directory):
 
 if __name__ == "__main__":
     tree = get_file_tree(working_dir)
-    print_file_structure(tree, tree[0])
+    for f in tree:
+        print(get_printable_information(f))
+    #html = create_html_list(tree, tree[1])
+    #print(html)
+    # print_file_structure(tree, tree[0])
