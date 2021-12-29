@@ -2,34 +2,59 @@ import os
 from src.File import File
 
 working_dir = "../root"
-tree = []
+
+
+def print_file_structure(file_tree, current):
+    for c in current.children:
+        indent = "---" * c.level
+        print(indent, c.name)
+        print_file_structure(file_tree, c)
+
+
+def get_file_by_path(files, path):
+    for f in files:
+        if f.path == path:
+            return f
+
+
+def set_children(file_tree, file):
+    for f in file_tree:
+        if f.parent is file:
+            file.add_child(f)
+
+
+def compute_level(file):
+    level = 0
+    parent = file.parent
+    while parent is not None:
+        level = level + 1
+        parent = parent.parent
+    return level
 
 
 def get_file_tree(directory):
-
-    root_file = File(name=os.path.basename(directory), parent=None, path=directory,level=0)
-    tree.append(root_file)
-    old_root = root_file
+    file_tree = []
+    file = File(os.path.basename(directory), os.path.abspath(directory), None)
+    file_tree.append(file)
     for root, dirs, files in os.walk(directory):
-        new = root.replace(directory, '')
-        level = new.count(os.sep)
-        new_root = File(name=os.path.basename(new), parent=old_root, path = new, level = level)
-        tree.append(new_root)
-        indent = ' ' * 4 * level
-        subindent = ' ' * 4 * (level + 1)
+        for d in dirs:
+            path = os.path.abspath(os.path.join(root, d))
+            parent = get_file_by_path(file_tree, os.path.dirname(path))
+            file = File(os.path.basename(path), path, parent)
+            file_tree.append(file)
         for f in files:
-            file = File(name=os.path.basename(f), parent=new_root, path = os.path.join(directory, f), level = level)
-            tree.append(file)
-        old_root = new_root
+            path = os.path.abspath(os.path.join(root, f))
+            parent = get_file_by_path(file_tree, os.path.dirname(path))
+            file = File(os.path.basename(path), path, parent)
+            file_tree.append(file)
+
+    for f in file_tree:
+        set_children(file_tree, f)
+        f.set_level(compute_level(f))
+
+    return file_tree
 
 
-
-
-get_file_tree(working_dir)
-
-
-for t in tree:
-    if(t.parent != None):
-        print(t.name + " ---  "+ t.parent.name)
-    else:
-        print(t.name)
+if __name__ == "__main__":
+    tree = get_file_tree(working_dir)
+    print_file_structure(tree, tree[0])

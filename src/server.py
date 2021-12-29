@@ -1,10 +1,7 @@
-import os
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from pathlib import Path
 from src.routes import routes
 
-# HOST_NAME = '127.0.0.1'
-HOST_NAME = 'localhost'
+HOST_NAME = '127.0.0.1'
 PORT = 80
 
 
@@ -20,7 +17,6 @@ class Handler(BaseHTTPRequestHandler):
 
     def handle_http(self, status, content_type):
         status = 200
-        print(self.path)
         if self.path in routes:
             route_content = routes[self.path]['path']
             content_type = routes[self.path]['type']

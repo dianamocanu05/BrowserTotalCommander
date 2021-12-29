@@ -2,11 +2,11 @@ import os
 
 
 class File:
+    level = 0 #by default
 
-    def __init__(self, name, path, level, parent):
+    def __init__(self, name, path, parent):
         self.name = name
         self.path = path
-        self.level = level
         self.parent = parent
         self.children = []
 
@@ -25,3 +25,12 @@ class File:
 
     def rename(self, new_name):
         os.rename(self.path, new_name)
+
+    def set_parent(self, parent):
+        self.parent = parent
+
+    def add_child(self, child):
+        self.children.append(child)
+
+    def set_level(self, level):
+        self.level = level
