@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load app_logic %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,10 +10,7 @@
 
 </head>
 <body>
-<div class="row">
-    <div class="column"></div>
-    <div class="column"></div>
-</div>
+
 
 <div class="vl"></div>
 <!--
@@ -30,16 +28,16 @@
                 <img src="../media/icons/new-file.png"><a class="nav-link" href="#">Copy</a>
             </li>
             <li class="nav-item">
-                 <img src="../media/icons/delete-file.png"><a class="nav-link" href="#">Delete</a>
+                <img src="../media/icons/delete-file.png"><a class="nav-link" href="#">Delete</a>
             </li>
             <li class="nav-item">
-                 <img src="../media/icons/move-file.png"><a class="nav-link" href="#">Move to/Rename</a>
+                <img src="../media/icons/move-file.png"><a class="nav-link" href="#">Move to/Rename</a>
             </li>
-             <li class="nav-item">
-                 <img src="../media/icons/add-file.png"><a class="nav-link" href="#">Add new...</a>
+            <li class="nav-item">
+                <img src="../media/icons/add-file.png"><a class="nav-link" href="#">Add new...</a>
             </li>
-             <li class="nav-item">
-                 <img src="../media/icons/edit-file.png"><a class="nav-link" href="#">Edit</a>
+            <li class="nav-item">
+                <img src="../media/icons/edit-file.png"><a class="nav-link" href="#">Edit</a>
             </li>
         </ul>
     </div>
@@ -57,21 +55,41 @@
                 <img src="../media/icons/new-file.png"><a class="nav-link" href="#">Copy</a>
             </li>
             <li class="nav-item">
-                 <img src="../media/icons/delete-file.png"><a class="nav-link" href="#">Delete</a>
+                <img src="../media/icons/delete-file.png"><a class="nav-link" href="#">Delete</a>
             </li>
             <li class="nav-item">
-                 <img src="../media/icons/move-file.png"><a class="nav-link" href="#">Move to/Rename</a>
+                <img src="../media/icons/move-file.png"><a class="nav-link" href="#">Move to/Rename</a>
             </li>
-             <li class="nav-item">
-                 <img src="../media/icons/add-file.png"><a class="nav-link" href="#">Add new...</a>
+            <li class="nav-item">
+                <img src="../media/icons/add-file.png"><a class="nav-link" href="#">Add new...</a>
             </li>
-             <li class="nav-item">
-                 <img src="../media/icons/edit-file.png"><a class="nav-link" href="#">Edit</a>
+            <li class="nav-item">
+                <img src="../media/icons/edit-file.png"><a class="nav-link" href="#">Edit</a>
             </li>
         </ul>
     </div>
 </nav>
 
+<!--<div class="row">-->
+<!--    <div class="lcolumn"><a>Hello</a> </div>-->
+<!--    <div class="rcolumn"><a>Darkness</a> </div>-->
+<!--</div>-->
+<div class="split left">
+    <div class="centered">
+    </div>
+</div>
 
+<div class="split right">
+    <div class="centered">
+        <div id="list">
+            {% hello 'list' as list %}
+           {{ list }}
+        </div>
+
+    </form>
+    </div>
+</div>
 </body>
+<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
 </html>
