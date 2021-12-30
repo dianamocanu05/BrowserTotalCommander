@@ -47,7 +47,7 @@
                                                            onclick="setOperation('edit')">Edit</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/back.png"><a class="nav-link" href="#" onclick="setOperation('back')">Back</a>
+                <img src="../media/icons/back.png"><a class="nav-link" href="#" onclick="setOperation('back1')">Back</a>
             </li>
             <li class="nav-item">
                 <img src="../media/icons/where.png"><a class="nav-link" href="#" data-toggle="tooltip" title="">Current
@@ -84,7 +84,7 @@
                 <img src="../media/icons/edit-file.png"><a class="nav-link" href="#">Edit</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/back.png"><a class="nav-link" href="#" onclick="edit()">Back</a>
+                <img src="../media/icons/back.png"><a class="nav-link" href="#" onclick="setOperation('back2')">Back</a>
             </li>
             <li class="nav-item">
                 <img src="../media/icons/where.png"><a class="nav-link" href="#" data-toggle="tooltip" title="">Current
@@ -161,8 +161,11 @@ function setOperation(operation){
         case 'copy':
             alert('copy');
             break;
-        case 'delete':
-            alert('delete');
+        case 'back1':
+            back(1);
+            break;
+        case 'back2':
+            back(2);
             break;
         default:
             break;
@@ -181,6 +184,21 @@ function expand(field){
         }
     };
     var data = JSON.stringify({"expand": field});
+    xhr.send(data);
+}
+
+function back(index){
+    var xhr = new XMLHttpRequest();
+    var url = "/back";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("list" + index.toString()).innerHTML = "";
+            document.getElementById("list" + index.toString()).innerHTML = this.responseText;
+        }
+    };
+    var data = JSON.stringify({"index": index});
     xhr.send(data);
 }
 

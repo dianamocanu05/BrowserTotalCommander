@@ -4,20 +4,23 @@ from flask import Flask, render_template, send_from_directory, request
 from src.constants import constants
 
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
-working_dir = constants['working_dir']
-tree = get_file_tree(working_dir)
+working_dir1 = constants['working_dir']
+working_dir2 = constants['working_dir']
+tree = get_file_tree(working_dir1)
+root1 = tree[0]
+root2 = tree[0]
 html_code1 = create_html_list(1, tree[0])
 html_code2 = create_html_list(2, tree[0])
 
 
 @app.route('/')
 def home():
-    global working_dir
+    global working_dir1
     global tree
 
     # html_code1 = create_html_list(1, tree[0])
     # html_code2 = create_html_list(2, tree[0])
-    return render_template('template.html', list={'list1': html_code1, 'list2': html_code2, 'working_dir': working_dir})
+    return render_template('template.html', list={'list1': html_code1, 'list2': html_code2, 'working_dir': working_dir1})
 
 
 @app.route('/media/<path:path>')
@@ -42,14 +45,30 @@ def addSelected():
 
 @app.route('/expand', methods=['POST'])
 def expand():
-    global html_code1, html_code2
+    global html_code1, html_code2, working_dir1, working_dir2, root1, root2
     to_expand = request.json['expand']
     file = get_file_by_name(to_expand[:-1], tree)
     if to_expand[-1] == '1':
+        working_dir1 = root1 = file
         html_code1 = create_html_list(1, file)
         return html_code1
     else:
+        working_dir2 = root2 = file
         html_code2 = create_html_list(2, file)
+        return html_code2
+
+
+@app.route('/back', methods=['POST'])
+def go_back():
+    global html_code1, html_code2, working_dir1, working_dir2, root1, root2
+    index = request.json['index']
+    if str(index) == '1':
+        html_code1 = create_html_list(1, root1.parent)
+        working_dir1 = root1 = root1.parent
+        return html_code1
+    else:
+        html_code2 = create_html_list(2, root2.parent)
+        working_dir2 = root2 = root2.parent
         return html_code2
 
 
