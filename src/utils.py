@@ -39,6 +39,10 @@ def get_format_icon(file):
         return os.path.join(img_path, 'text-file.png')
     if file.get_extension() == '.pdf':
         return os.path.join(img_path, 'pdf-file.png')
+    if file.get_extension() == '.html':
+        return os.path.join(img_path, 'html-file.png')
+    if file.get_extension() == '.docx':
+        return os.path.join(img_path, 'docx-file.png')
     return os.path.join(img_path, 'blank-file.png')
 
 
