@@ -5,8 +5,9 @@ def create_html_list(tree, root):
     html_code = "<div><ul>\n"
     for c in root.children:
         html_code += "<li><img src='" + get_format_icon(c) + "'" + "style='width: 30px; height: 30px;'>"
-        html_code += "<a>" + get_printable_information(c) + "</a></li>\n"
+        html_code += "<a onclick=\"alert('selecta');\">" + get_printable_information(c) + "</a></li>\n"
     html_code += "</ul></div>"
+    print(html_code)
     return html_code
 
 

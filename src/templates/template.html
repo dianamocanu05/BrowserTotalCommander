@@ -24,24 +24,24 @@
 -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="navbar-collapse collapse w-100 dual-collapse2 order-1 order-md-0">
-    <ul class="navbar-nav ml-auto text-center">
-        <li class="nav-item active">
-            <img src="../media/icons/new-file.png"><a id="copy" class="nav-link" href="#" onclick="alert('copy');">Copy</a>
-        </li>
-        <li class="nav-item">
-            <img src="../media/icons/delete-file.png"><a class="nav-link" href="#" onclick="delete()">Delete</a>
-        </li>
-        <li class="nav-item">
-            <img src="../media/icons/move-file.png"><a class="nav-link" href="#" onclick="move_rename()">Move
-            to/Rename</a>
-        </li>
-        <li class="nav-item">
-            <img src="../media/icons/add-file.png"><a class="nav-link" href="#" onclick="add()">Add new...</a>
-        </li>
-        <li class="nav-item">
-            <img src="../media/icons/edit-file.png"><a class="nav-link" href="#" onclick="edit()">Edit</a>
-        </li>
-    </ul>
+        <ul class="navbar-nav ml-auto text-center">
+            <li class="nav-item active">
+                <img src="../media/icons/new-file.png"><a id="copy" class="nav-link" href="#" onclick="alert('copy');">Copy</a>
+            </li>
+            <li class="nav-item">
+                <img src="../media/icons/delete-file.png"><a class="nav-link" href="#" onclick="delete()">Delete</a>
+            </li>
+            <li class="nav-item">
+                <img src="../media/icons/move-file.png"><a class="nav-link" href="#" onclick="move_rename()">Move
+                to/Rename</a>
+            </li>
+            <li class="nav-item">
+                <img src="../media/icons/add-file.png"><a class="nav-link" href="#" onclick="add()">Add new...</a>
+            </li>
+            <li class="nav-item">
+                <img src="../media/icons/edit-file.png"><a class="nav-link" href="#" onclick="edit()">Edit</a>
+            </li>
+        </ul>
     </div>
     <div class="mx-auto my-2 order-0 order-md-1 position-relative">
         <a class="mx-auto" href="#">
@@ -77,18 +77,20 @@
 <!--    <div class="rcolumn"><a>Darkness</a> </div>-->
 <!--</div>-->
 <div class="split left" onfocus="this.blur();">
-        <div id="list" onclick="select">
-            {{ list.list|safe }}
-        </div>
+    <div id="list">
+        {{ list.list|safe }}
+    </div>
 </div>
 
 <div class="split right">
-        <div id="list" onclick="select">
-            {{ list.list|safe }}
-        </div>
+    <div id="list">
+        {{ list.list|safe }}
+    </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 </body>
 </html>
 
