@@ -1,6 +1,16 @@
 from src.server import app
 
 
+def back():
+    print('Back')
+
+
+def current_location():
+    print('Current Location')
+
+
+def copy():
+    print('Copy')
 
 
 def delete():

@@ -12,7 +12,6 @@
 </head>
 <body>
 
-
 <div class="vl"></div>
 <!--
     ● Copiere fișiere / foldere (inclusiv selecție de fișiere/ foldere)
@@ -41,6 +40,13 @@
             <li class="nav-item">
                 <img src="../media/icons/edit-file.png"><a class="nav-link" href="#" onclick="edit()">Edit</a>
             </li>
+            <li class="nav-item">
+                <img src="../media/icons/back.png"><a class="nav-link" href="#" onclick="edit()">Back</a>
+            </li>
+            <li class="nav-item">
+                <img src="../media/icons/where.png"><a class="nav-link" href="#" data-toggle="tooltip" title="">Current
+                location</a>
+            </li>
         </ul>
     </div>
     <div class="mx-auto my-2 order-0 order-md-1 position-relative">
@@ -68,15 +74,23 @@
             <li class="nav-item">
                 <img src="../media/icons/edit-file.png"><a class="nav-link" href="#">Edit</a>
             </li>
+            <li class="nav-item">
+                <img src="../media/icons/back.png"><a class="nav-link" href="#" onclick="edit()">Back</a>
+            </li>
+            <li class="nav-item">
+                <img src="../media/icons/where.png"><a class="nav-link" href="#" data-toggle="tooltip" title="">Current
+                location</a>
+            </li>
         </ul>
     </div>
 </nav>
+
 
 <!--<div class="row">-->
 <!--    <div class="lcolumn"><a>Hello</a> </div>-->
 <!--    <div class="rcolumn"><a>Darkness</a> </div>-->
 <!--</div>-->
-<div class="split left" onfocus="this.blur();">
+<div class="split left">
     <div id="list">
         {{ list.list|safe }}
     </div>
@@ -87,10 +101,19 @@
         {{ list.list|safe }}
     </div>
 </div>
+<input id="dir" type="hidden" value="{{ list.working_dir }}">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="tooltip"]').attr("title", document.getElementById('dir').value);
+});
+
+</script>
 </body>
 </html>
 

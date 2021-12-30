@@ -7,7 +7,6 @@ def create_html_list(tree, root):
         html_code += "<li><img src='" + get_format_icon(c) + "'" + "style='width: 30px; height: 30px;'>"
         html_code += "<a onclick=\"alert('selecta');\">" + get_printable_information(c) + "</a></li>\n"
     html_code += "</ul></div>"
-    print(html_code)
     return html_code
 
 
@@ -32,4 +31,7 @@ def get_format_icon(file):
     if file.get_extension() == '.mp4':
         return os.path.join(img_path, 'video-file.png')
     if file.get_extension() == '.txt':
-        return os.path.join(img_path, 'text-file')
+        return os.path.join(img_path, 'text-file.png')
+    if file.get_extension() == '.pdf':
+        return os.path.join(img_path, 'pdf-file.png')
+    return os.path.join(img_path, 'blank-file.png')
