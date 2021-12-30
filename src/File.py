@@ -1,8 +1,9 @@
 import os
 import datetime
 
+
 class File:
-    level = 0 #by default
+    level = 0  # by default
 
     def __init__(self, name, path, parent):
         self.name = name

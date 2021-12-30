@@ -1,6 +1,6 @@
 import os
 from src.File import File
-from src.utils import create_html_list, get_printable_information
+from src.utils import get_printable_information
 working_dir = "../root"
 
 
