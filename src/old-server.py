@@ -43,7 +43,7 @@ class Handler(BaseHTTPRequestHandler):
         return bytes(response_content, "UTF - 8")
 
     def respond(self):
-        content = self.handle_http(200, 'text / html')
+        content = self.handle_http(200, 'text / templates')
         self.wfile.write(content)
 
 

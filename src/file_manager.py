@@ -59,6 +59,6 @@ if __name__ == "__main__":
     tree = get_file_tree(working_dir)
     for f in tree:
         print(get_printable_information(f))
-    #html = create_html_list(tree, tree[1])
-    #print(html)
+    #templates = create_html_list(tree, tree[1])
+    #print(templates)
     # print_file_structure(tree, tree[0])

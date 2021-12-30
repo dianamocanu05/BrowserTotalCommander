@@ -1,7 +1,7 @@
 routes = {
     "/": {
-        "path": "..\\web\\html\\template.html",
-        "type": "text/html"
+        "path": "..\\web\\templates\\template.html",
+        "type": "text/templates"
     },
     "/style/style.css": {
         "path": "..\\web\\style\\style.css",
