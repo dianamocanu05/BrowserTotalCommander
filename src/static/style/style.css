@@ -70,7 +70,15 @@
   text-align: center;
 }
 
-.list{
+.list1{
+position: absolute;
+  top: 30%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+}
+
+.list2{
 position: absolute;
   top: 30%;
   left: 30%;

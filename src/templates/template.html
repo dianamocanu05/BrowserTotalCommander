@@ -25,23 +25,29 @@
     <div class="navbar-collapse collapse w-100 dual-collapse2 order-1 order-md-0">
         <ul class="navbar-nav ml-auto text-center">
             <li class="nav-item active">
-                <img src="../media/icons/new-file.png"><a id="copy" class="nav-link" href="#" onclick="alert('copy');">Copy</a>
+                <img src="../media/icons/new-file.png"><a id="copy" class="nav-link" href="#"
+                                                          onclick="setOperation('copy')">Copy</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/delete-file.png"><a class="nav-link" href="#" onclick="delete()">Delete</a>
+                <img src="../media/icons/paste-file.png"><a class="nav-link" href="#" onclick="setOperation('paste')">Paste</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/move-file.png"><a class="nav-link" href="#" onclick="move_rename()">Move
+                <img src="../media/icons/delete-file.png"><a class="nav-link" href="#" onclick="setOperation('delete')">Delete</a>
+            </li>
+            <li class="nav-item">
+                <img src="../media/icons/move-file.png"><a class="nav-link" href="#" onclick="setOperation('move')">Move
                 to/Rename</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/add-file.png"><a class="nav-link" href="#" onclick="add()">Add new...</a>
+                <img src="../media/icons/add-file.png"><a class="nav-link" href="#" onclick="setOperation('add')">Add
+                new...</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/edit-file.png"><a class="nav-link" href="#" onclick="edit()">Edit</a>
+                <img src="../media/icons/edit-file.png"><a class="nav-link" href="#"
+                                                           onclick="setOperation('edit')">Edit</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/back.png"><a class="nav-link" href="#" onclick="edit()">Back</a>
+                <img src="../media/icons/back.png"><a class="nav-link" href="#" onclick="setOperation('back')">Back</a>
             </li>
             <li class="nav-item">
                 <img src="../media/icons/where.png"><a class="nav-link" href="#" data-toggle="tooltip" title="">Current
@@ -61,6 +67,9 @@
         <ul class="navbar-nav mr-auto text-center">
             <li class="nav-item active">
                 <img src="../media/icons/new-file.png"><a class="nav-link" href="#">Copy</a>
+            </li>
+            <li class="nav-item">
+                <img src="../media/icons/paste-file.png"><a class="nav-link" href="#" onclick="setOperation('paste')">Paste</a>
             </li>
             <li class="nav-item">
                 <img src="../media/icons/delete-file.png"><a class="nav-link" href="#">Delete</a>
@@ -91,14 +100,14 @@
 <!--    <div class="rcolumn"><a>Darkness</a> </div>-->
 <!--</div>-->
 <div class="split left">
-    <div id="list">
-        {{ list.list|safe }}
+    <div id="list1">
+        {{ list.list1|safe }}
     </div>
 </div>
 
 <div class="split right">
-    <div id="list">
-        {{ list.list|safe }}
+    <div id="list2">
+        {{ list.list2|safe }}
     </div>
 </div>
 <input id="dir" type="hidden" value="{{ list.working_dir }}">
@@ -108,6 +117,7 @@
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
 <script>
+const selected = []
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="tooltip"]').attr("title", document.getElementById('dir').value);
@@ -116,8 +126,67 @@ function highlight(field){
 
     const colors = ["rgb(255, 0, 0)", "rgb(0, 0, 0)"];
     var current_color = document.getElementById(field).style.color;
-   document.getElementById(field).style.color = colors[1-colors.indexOf(current_color)];
+    if(current_color == "rgb(0, 0, 0)"){
+        document.getElementById(field).style.color = "rgb(255, 0, 0)";
+        selected.push(field);
+    }else{
+        unhighlight(field);
+    }
+
 }
+
+function unhighlight(field){
+    document.getElementById(field).style.color = "rgb(0, 0, 0)";
+    var index = selected.indexOf(field);
+    selected.splice(index, index);
+    //sendSelectedRequest();
+}
+
+function sendSelectedRequest(){
+    var xhr = new XMLHttpRequest();
+    var url = "/selected";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var json = JSON.parse(xhr.responseText);
+        }
+    };
+    var data = JSON.stringify({"selected": selected});
+    xhr.send(data);
+}
+
+function setOperation(operation){
+   switch(operation) {
+        case 'copy':
+            alert('copy');
+            break;
+        case 'delete':
+            alert('delete');
+            break;
+        default:
+            break;
+    }
+}
+
+function expand(field){
+    var xhr = new XMLHttpRequest();
+    var url = "/expand";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("list" + field.substr(field.length-1)).innerHTML = "";
+            document.getElementById("list" + field.substr(field.length-1)).innerHTML = this.responseText;
+        }
+    };
+    var data = JSON.stringify({"expand": field});
+    xhr.send(data);
+}
+
+
+
+
 
 </script>
 </body>
