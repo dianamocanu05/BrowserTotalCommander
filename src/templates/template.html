@@ -112,6 +112,12 @@ $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="tooltip"]').attr("title", document.getElementById('dir').value);
 });
+function highlight(field){
+
+    const colors = ["rgb(255, 0, 0)", "rgb(0, 0, 0)"];
+    var current_color = document.getElementById(field).style.color;
+   document.getElementById(field).style.color = colors[1-colors.indexOf(current_color)];
+}
 
 </script>
 </body>
