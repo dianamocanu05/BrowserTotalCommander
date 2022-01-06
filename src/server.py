@@ -78,6 +78,7 @@ def go_back():
         working_dir2 = root2 = root2.parent
         if html_code2 is not None:
             return html_code2
+    return ""
 
 
 @app.route('/copy', methods=['POST'])
@@ -87,6 +88,16 @@ def copy():
     to_copy = selected
     print(to_copy)
     return "success"
+
+
+@app.route('/delete', methods=['POST'])
+def delete():
+    global tree, selected
+    to_delete = selected
+    for file_name in to_delete:
+        file = get_file_by_name(file_name, tree)
+        file.delete()
+    tree = get_file_tree(constants['working_dir'])
 
 
 @app.route('/paste', methods=['POST'])

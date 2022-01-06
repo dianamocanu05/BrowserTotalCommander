@@ -190,10 +190,10 @@ function setOperation(operation){
             paste(2);
             break;
         case 'delete1':
-            alert('copy');
+            delete(1);
             break;
         case 'delete2':
-            alert('delete2');
+            delete(2);
             break;
         case 'back1':
             back(1);
@@ -282,6 +282,22 @@ function paste(index){
             alert(this.responseText);
             document.getElementById("list" + index.toString()).innerHTML = "";
             document.getElementById("list" + index.toString()).innerHTML = this.responseText;
+        }
+    };
+    var data = JSON.stringify({"index": index});
+    xhr.send(data);
+}
+
+
+function delete(index){
+    sendSelectedRequest();
+    var xhr = new XMLHttpRequest();
+    var url = "/delete";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+            alert('here');
         }
     };
     var data = JSON.stringify({"index": index});
