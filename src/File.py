@@ -1,6 +1,6 @@
 import os
 import datetime
-from shutil import copyfile
+from shutil import copyfile, rmtree
 
 
 class File:
@@ -23,7 +23,10 @@ class File:
         return os.path.isdir(self.path)
 
     def delete(self):
-        os.remove(self.path)
+        if os.path.isdir(self.path):
+            rmtree(self.path)
+        else:
+            os.remove(self.path)
 
     def rename(self, new_name):
         os.rename(self.path, new_name)
@@ -46,3 +49,14 @@ class File:
     def copy(self, destination):
         copyfile(self.path, destination)
 
+    def get_ancestors(self):
+        ancestors = []
+        parent = self.parent
+        while parent is not None:
+            ancestors.append(parent)
+            parent = parent.parent
+        return ancestors
+
+    def get_ancestor_level(self, ancestor):
+        ancestors = self.get_ancestors()
+        return ancestors.index(ancestor)

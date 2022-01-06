@@ -1,8 +1,9 @@
 from src.file_manager import get_file_tree
-from src.utils import create_html_list, get_file_by_name
+from src.utils import create_html_list, get_file_by_name, get_file_by_name_ancestor
 from src.actions import copy_paste
 from flask import Flask, render_template, send_from_directory, request
 from src.constants import constants
+import time
 
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
 working_dir1 = constants['working_dir']
@@ -46,6 +47,7 @@ def send_py(filename):
 def addSelected():
     global selected
     selected = request.json["selected"]
+    print(selected)
     return request.json
 
 
@@ -86,34 +88,56 @@ def copy():
     global html_code1, html_code2, working_dir1, working_dir2, root1, root2, to_copy
     index = request.json['index']
     to_copy = selected
-    print(to_copy)
     return "success"
 
 
-@app.route('/delete', methods=['POST'])
-def delete():
-    global tree, selected
+@app.route('/delete-file', methods=['POST'])
+def delete_file():
+    global tree, selected, html_code1, html_code2, root1, root2
     to_delete = selected
+    index = request.json['index']
+
     for file_name in to_delete:
-        file = get_file_by_name(file_name, tree)
+        file_name = file_name[:-1]
+        if str(index) == '1':
+            file = get_file_by_name_ancestor(file_name, tree, root1)
+        else:
+            file = get_file_by_name_ancestor(file_name, tree, root2)
         file.delete()
+
     tree = get_file_tree(constants['working_dir'])
+
+    if str(index) == '1':
+        new_root1 = get_file_by_name(root1.name, tree)
+        root1 = new_root1
+        html_code1 = create_html_list(1, new_root1)
+        return html_code1
+    else:
+        new_root2 = get_file_by_name(root2.name, tree)
+        root2 = new_root2
+        html_code2 = create_html_list(2, new_root2)
+        return html_code2
 
 
 @app.route('/paste', methods=['POST'])
 def paste():
     global html_code1, html_code2, working_dir1, working_dir2, root1, root2, to_copy, tree
+
     index = request.json['index']
     if str(index) == '1':
         copy_paste(to_copy, root1.path, tree)
         tree = get_file_tree(constants['working_dir'])
-        html_code1 = create_html_list(1, root1)
+        new_root1 = get_file_by_name(root1.name, tree)
+        root1 = new_root1
+        html_code1 = create_html_list(1, new_root1)
         return html_code1
 
-    else:
+    elif str(index) == '2':
         copy_paste(to_copy, root2.path, tree)
         tree = get_file_tree(constants['working_dir'])
-        html_code2 = create_html_list(2, root2)
+        new_root2 = get_file_by_name(root2.name, tree)
+        root2 = new_root2
+        html_code2 = create_html_list(2, new_root2)
         return html_code2
 
 
@@ -124,6 +148,21 @@ def cwd():
         return root1.path
     else:
         return root2.path
+
+
+@app.route('/refresh', methods=['POST'])
+def refresh():
+    global tree, html_code1, html_code2
+    index = request.json['index']
+    tree = get_file_tree(constants['working_dir'])
+    if str(index) == '1':
+        new_root1 = get_file_by_name(root1.name, tree)
+        html_code1 = create_html_list(1, new_root1)
+        return html_code1
+    else:
+        new_root2 = get_file_by_name(root2.name, tree)
+        html_code2 = create_html_list(2, new_root2)
+        return html_code2
 
 
 if __name__ == '__main__':

@@ -53,6 +53,9 @@
                 <img src="../media/icons/where.png"><a class="nav-link" href="#" data-toggle="tooltip" onclick="getCwd(1);"title="">Current
                 location</a>
             </li>
+            <li class="nav-item">
+                <img src="../media/icons/reload.png"><a class="nav-link" href="#" onclick="setOperation('reload1')">Refresh</a>
+            </li>
         </ul>
     </div>
     <div class="mx-auto my-2 order-0 order-md-1 position-relative">
@@ -66,7 +69,7 @@
     <div class="navbar-collapse collapse w-100 dual-collapse2 order-2 order-md-2">
         <ul class="navbar-nav mr-auto text-center">
             <li class="nav-item active">
-                <img src="../media/icons/new-file.png"><a class="nav-link" href="#" onclick="setOperation('copy2)">Copy</a>
+                <img src="../media/icons/new-file.png"><a class="nav-link" href="#" onclick="setOperation('copy2')">Copy</a>
             </li>
             <li class="nav-item">
                 <img src="../media/icons/paste-file.png"><a class="nav-link" href="#" onclick="setOperation('paste2')">Paste</a>
@@ -89,6 +92,9 @@
             <li class="nav-item">
                 <img src="../media/icons/where.png"><a class="nav-link" href="#" onclick="getCwd(2);"   data-toggle="tooltip" title="">Current
                 location</a>
+            </li>
+            <li class="nav-item">
+                <img src="../media/icons/reload.png"><a class="nav-link" href="#" onclick="setOperation('reload2')">Refresh</a>
             </li>
         </ul>
     </div>
@@ -132,7 +138,7 @@ function getCwd(index){
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            alert(xhr.responseText);
+            //alert(xhr.responseText);
             return(xhr.responseText);
 
         }
@@ -150,6 +156,7 @@ function highlight(field){
         selected.push(field);
     }else{
         unhighlight(field);
+
     }
 
 }
@@ -158,7 +165,6 @@ function unhighlight(field){
     document.getElementById(field).style.color = "rgb(0, 0, 0)";
     var index = selected.indexOf(field);
     selected.splice(index, index);
-    //sendSelectedRequest();
 }
 
 function sendSelectedRequest(){
@@ -175,54 +181,7 @@ function sendSelectedRequest(){
     xhr.send(data);
 }
 
-function setOperation(operation){
-   switch(operation) {
-        case 'copy1':
-            copy(1);
-            break;
-        case 'copy2':
-            copy(2);
-            break;
-        case 'paste1':
-            paste(1);
-            break;
-        case 'paste2':
-            paste(2);
-            break;
-        case 'delete1':
-            delete(1);
-            break;
-        case 'delete2':
-            delete(2);
-            break;
-        case 'back1':
-            back(1);
-            break;
-        case 'back2':
-            back(2);
-            break;
-        case 'move1':
-            alert('delete2');
-            break;
-        case 'move2':
-            back(1);
-            break;
-        case 'add1':
-            back(2);
-            break;
-        case 'add2':
-            back(2);
-            break;
-        case 'edit1':
-            back(2);
-            break;
-        case 'edit2':
-            back(2);
-            break;
-        default:
-            break;
-    }
-}
+
 
 function expand(field){
     unhighlight(field);
@@ -257,7 +216,6 @@ function back(index){
 
 function copy(index){
     sendSelectedRequest();
-
     var xhr = new XMLHttpRequest();
     var url = "/copy";
     xhr.open("POST", url, true);
@@ -279,32 +237,97 @@ function paste(index){
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
        if (xhr.readyState === 4 && xhr.status === 200) {
-            alert(this.responseText);
+            selected.splice(0,selected.length);
             document.getElementById("list" + index.toString()).innerHTML = "";
             document.getElementById("list" + index.toString()).innerHTML = this.responseText;
         }
     };
     var data = JSON.stringify({"index": index});
     xhr.send(data);
+
 }
 
 
-function delete(index){
+function delete_file(index){
     sendSelectedRequest();
     var xhr = new XMLHttpRequest();
-    var url = "/delete";
+    var url = "/delete-file";
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
        if (xhr.readyState === 4 && xhr.status === 200) {
-            alert('here');
+            selected.splice(0,selected.length);
+            document.getElementById("list" + index.toString()).innerHTML = "";
+            document.getElementById("list" + index.toString()).innerHTML = this.responseText;
         }
     };
     var data = JSON.stringify({"index": index});
     xhr.send(data);
+
 }
 
 
+
+function setOperation(operation){
+   switch(operation) {
+        case 'copy1':
+            copy(1);
+            break;
+        case 'copy2':
+            copy(2);
+            break;
+        case 'paste1':
+            paste(1);
+            break;
+        case 'reload1':
+            refresh(1);
+            break;
+        case 'reload2':
+            refresh(2);
+            break;
+        case 'paste2':
+            paste(2);
+            break;
+        case 'delete1':
+            delete_file(1);
+            break;
+        case 'delete2':
+            delete_file(2);
+            break;
+        case 'back1':
+            back(1);
+            break;
+        case 'back2':
+            back(2);
+            break;
+        case 'move1':
+            alert('delete2');
+            break;
+        case 'move2':
+            back(1);
+            break;
+        case 'add1':
+            back(2);
+            break;
+        case 'add2':
+            back(2);
+            break;
+        case 'edit1':
+            back(2);
+            break;
+        case 'edit2':
+            back(2);
+            break;
+        default:
+            break;
+    }
+}
+
+
+function refresh(index){
+    alert(selected);
+
+}
 
 
 

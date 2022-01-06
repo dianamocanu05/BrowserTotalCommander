@@ -50,3 +50,20 @@ def get_file_by_name(name, tree):
     for f in tree:
         if f.name == name:
             return f
+
+
+def get_file_by_path(path, tree):
+    for f in tree:
+        if f.path == path:
+            return f
+
+
+def get_file_by_name_ancestor(name, tree, ancestor):
+    minim = 100
+    desired_file = None
+    for f in tree:
+        if f.name == name and ancestor in f.get_ancestors():
+            if f.get_ancestor_level(ancestor) < minim:
+                minim = f.get_ancestor_level(ancestor)
+                desired_file = f
+    return desired_file

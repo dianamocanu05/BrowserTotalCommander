@@ -7,5 +7,4 @@ def copy_paste(files, destination, tree):
         file_name = file_name[:-1]
         destination = os.path.join(destination, file_name)
         file = get_file_by_name(file_name, tree)
-        print(file_name, file.path , destination)
         file.copy(destination)
