@@ -1,5 +1,6 @@
 import os
 import datetime
+from shutil import copyfile
 
 
 class File:
@@ -41,3 +42,7 @@ class File:
 
     def get_permissions_mask(self):
         return oct(os.stat(self.path).st_mode)
+
+    def copy(self, destination):
+        copyfile(self.path, destination)
+

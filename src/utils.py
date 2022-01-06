@@ -6,7 +6,7 @@ def create_html_list(index, root):
         html_code = "<div><ul>\n"
         for c in root.children:
             html_code += "<li><img src='" + get_format_icon(c) + "'" + "style='width: 30px; height: 30px;'>"
-            html_code += "<a id=" + "'" + c.name + str(index) + "' " + " onclick=\"highlight('" + c.name + str(
+            html_code += "<a id=" + "'" + c.name + str(index) + "' " + " oncontextmenu=\"highlight('" + c.name + str(
                 index) + "');\" style='color:#000000" \
                          ";' ondblclick=\"expand('" + c.name + str(index) + "');\">" + \
                          get_printable_information(c) + "</a></li>\n"

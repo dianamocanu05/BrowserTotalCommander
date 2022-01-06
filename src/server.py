@@ -1,5 +1,6 @@
 from src.file_manager import get_file_tree
 from src.utils import create_html_list, get_file_by_name
+from src.actions import copy_paste
 from flask import Flask, render_template, send_from_directory, request
 from src.constants import constants
 
@@ -84,21 +85,31 @@ def copy():
     global html_code1, html_code2, working_dir1, working_dir2, root1, root2, to_copy
     index = request.json['index']
     to_copy = selected
+    print(to_copy)
     return "success"
 
 
 @app.route('/paste', methods=['POST'])
 def paste():
-    global html_code1, html_code2, working_dir1, working_dir2, root1, root2, to_copy
+    global html_code1, html_code2, working_dir1, working_dir2, root1, root2, to_copy, tree
     index = request.json['index']
-    print(to_copy)
-    return "success"
+    if str(index) == '1':
+        copy_paste(to_copy, root1.path, tree)
+        tree = get_file_tree(constants['working_dir'])
+        html_code1 = create_html_list(1, root1)
+        return html_code1
+
+    else:
+        copy_paste(to_copy, root2.path, tree)
+        tree = get_file_tree(constants['working_dir'])
+        html_code2 = create_html_list(2, root2)
+        return html_code2
 
 
 @app.route('/cwd', methods=['POST'])
 def cwd():
     index = request.json['index']
-    if index == '1':
+    if str(index) == '1':
         return root1.path
     else:
         return root2.path
