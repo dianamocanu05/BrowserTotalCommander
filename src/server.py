@@ -20,6 +20,10 @@ index = -1
 
 @app.route('/')
 def home():
+    """
+    home routes main html page
+    :return: template
+    """
     global working_dir1
     global tree
 
@@ -29,41 +33,71 @@ def home():
 
 @app.route('/media/<path:path>')
 def send_png(path):
+    """
+    send_png routes .png files
+    :param path: path
+    :return: .png file
+    """
     return send_from_directory('static/media', path)
 
 
 @app.route('/style/<filename>')
 def send_css(filename):
+    """
+    send_css routes .css files
+    :param filename: filename
+    :return: .css files
+    """
     return send_from_directory('static/style', filename)
 
 
 @app.route('/editor.html')
 def send_editor():
+    """
+    send_path_editor routes html
+    :return: template
+    """
     file = get_file_by_name(selected[0][:-1], tree)
     return render_template('editor.html', text=file.read())
 
 
 @app.route('/path.html')
 def send_path_editor():
+    """
+    send_path_editor routes html
+    :return: template
+    """
     file = get_file_by_name(selected[0][:-1], tree)
     return render_template('path.html', old_path=os.path.relpath(file.path, constants['working_dir']))
 
 
 @app.route('/scripts/<filename>')
 def send_py(filename):
+    """
+    send_py routes .py files
+    :param filename: filename
+    :return: .py file
+    """
     return send_from_directory('scripts', filename)
 
 
 @app.route('/selected', methods=['POST'])
-def addSelected():
+def add_selected():
+    """
+    add_selected retrieves the files selected by the user
+    :return: log message
+    """
     global selected
     selected = request.json["selected"]
-    print(selected)
     return request.json
 
 
 @app.route('/expand', methods=['POST'])
 def expand():
+    """
+    expand returns the html code corresponding to the children of current root
+    :return: html code
+    """
     global html_code1, html_code2, working_dir1, working_dir2, root1, root2
     to_expand = request.json['expand']
     file = get_file_by_name(to_expand[:-1], tree)
@@ -79,6 +113,10 @@ def expand():
 
 @app.route('/back', methods=['POST'])
 def go_back():
+    """
+    go_back sets the current roots at a previous level and returns the corresponding html code
+    :return: html code
+    """
     global html_code1, html_code2, working_dir1, working_dir2, root1, root2
     index = request.json['index']
     if str(index) == '1':
@@ -96,6 +134,10 @@ def go_back():
 
 @app.route('/copy', methods=['POST'])
 def copy():
+    """
+    copy receives the files selected to be copied
+    :return: log message
+    """
     global html_code1, html_code2, working_dir1, working_dir2, root1, root2, to_copy
     index = request.json['index']
     to_copy = selected
@@ -104,6 +146,10 @@ def copy():
 
 @app.route('/delete-file', methods=['POST'])
 def delete_file():
+    """
+    delete_file deletes all files to be deleted and returns new html list-file structure
+    :return: new html code
+    """
     global tree, selected, html_code1, html_code2, root1, root2
     to_delete = selected
     index = request.json['index']
@@ -131,6 +177,10 @@ def delete_file():
 
 @app.route('/paste', methods=['POST'])
 def paste():
+    """
+    paste copies the files to_copy to specified destination
+    :return: new html code
+    """
     global html_code1, html_code2, working_dir1, working_dir2, root1, root2, to_copy, tree
 
     index = request.json['index']
@@ -153,6 +203,10 @@ def paste():
 
 @app.route('/cwd', methods=['POST'])
 def cwd():
+    """
+    cwd returns current working directory
+    :return: path of cwd
+    """
     start = constants['working_dir']
     index = request.json['index']
     if str(index) == '1':
@@ -161,23 +215,13 @@ def cwd():
         return os.path.join('\\', os.path.relpath(root1.path, start))
 
 
-@app.route('/refresh', methods=['POST'])
-def refresh():
-    global tree, html_code1, html_code2
-    index = request.json['index']
-    tree = get_file_tree(constants['working_dir'])
-    if str(index) == '1':
-        new_root1 = get_file_by_name(root1.name, tree)
-        html_code1 = create_html_list(1, new_root1)
-        return html_code1
-    else:
-        new_root2 = get_file_by_name(root2.name, tree)
-        html_code2 = create_html_list(2, new_root2)
-        return html_code2
-
 
 @app.route('/add', methods=['POST'])
 def add():
+    """
+    add retrieves the index of the panel (1,2 - left, right) where the add operation has been triggered
+    :return: log message
+    """
     global index
     index = request.json['index']
     return "ok"
@@ -185,6 +229,10 @@ def add():
 
 @app.route('/new-file', methods=['POST'])
 def add_new_file():
+    """
+    add_new_file creates a new file at the location provided by user
+    :return: json containing new html
+    """
     global index, tree, html_code1, html_code2, root1, root2
     new_file = request.json["file"]
     add_file(os.path.join(root1.path, new_file))
@@ -203,6 +251,10 @@ def add_new_file():
 
 @app.route('/edit', methods=['POST'])
 def edit():
+    """
+    edit writes the selected file with the new text provided by user
+    :return: log message
+    """
     global tree, root1, root2, html_code1, html_code2
     text = request.json["text"]
     file = get_file_by_name(selected[0][:-1], tree)
@@ -223,6 +275,10 @@ def edit():
 
 @app.route("/new-path", methods=['POST'])
 def move_rename():
+    """
+    move_rename moves file selected to path sent in json
+    :return: log message
+    """
     new_path = request.json['text']
     file_name = selected[0][:-1]
     file = get_file_by_name(file_name, tree)
@@ -232,6 +288,10 @@ def move_rename():
 
 @app.route("/update", methods=['POST'])
 def update():
+    """
+    update send to frontend the updated file structure
+    :return: json containing new file structure
+    """
     global tree, root1, root2, html_code1, html_code2
     tree = get_file_tree(constants['working_dir'])
 
@@ -244,7 +304,6 @@ def update():
     html_code2 = create_html_list(2, new_root2)
 
     return {"html1": html_code1, "html2": html_code2}
-
 
 
 if __name__ == '__main__':
