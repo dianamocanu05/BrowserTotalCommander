@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Location</title>
+</head>
+<body>
+    <div id="old">Old path : {{ old_path }}</div>
+    <div>Type new path relative to: '../root'</div>
+     <div id="text">
+        <textarea id="textarea"></textarea>
+
+    </div>
+    <button type="button" onclick="send_new_path(document.getElementById('textarea').value);">Save</button>
+
+<script>
+    function send_new_path(new_path){
+        var xhr = new XMLHttpRequest();
+        var url = "/new-path";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                localStorage.setItem('done', 'true');
+                window.close();
+            }
+        };
+        var data = JSON.stringify({"text": new_path});
+        xhr.send(data);
+    }
+</script>
+</body>
+</html>

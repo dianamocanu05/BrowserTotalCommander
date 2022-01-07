@@ -317,10 +317,10 @@ function setOperation(operation){
             back(2);
             break;
         case 'move1':
-            alert('delete2');
+            move(1);
             break;
         case 'move2':
-            back(1);
+            move(2);
             break;
         case 'add1':
             add(1);
@@ -339,7 +339,43 @@ function setOperation(operation){
     }
 }
 
+function update(){
+    var xhr = new XMLHttpRequest();
+    var url = "/update";
+    console.log('here');
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+                     localStorage.setItem('done', 'false');
+                    var json = JSON.parse(this.responseText);
+                    html1 = json.html1;
+                    html2 = json.html2;
+                    document.getElementById("list1").innerHTML = "";
+                    document.getElementById("list1").innerHTML = html1;
+                    document.getElementById("list2").innerHTML = "";
+                    document.getElementById("list2").innerHTML = html2;
+                }
+            };
+    var data = JSON.stringify({"file": "ok"});
+    xhr.send(data);
+}
 
+function wait_for_end(){
+    if(localStorage.getItem('done') === 'true'){
+        update();
+    }else{
+        setTimeout(wait_for_end, 0);
+     }
+}
+function move(index){
+    sendSelectedRequest();
+    selected.splice(0,selected.length);
+    var path_window = window.open('./path.html','Location','width=300,height=200');
+    wait_for_end();
+
+
+}
 function refresh(index){
     alert(selected);
 }

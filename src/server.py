@@ -18,8 +18,6 @@ to_copy = []
 index = -1
 
 
-
-
 @app.route('/')
 def home():
     global working_dir1
@@ -43,6 +41,12 @@ def send_css(filename):
 def send_editor():
     file = get_file_by_name(selected[0][:-1], tree)
     return render_template('editor.html', text=file.read())
+
+
+@app.route('/path.html')
+def send_path_editor():
+    file = get_file_by_name(selected[0][:-1], tree)
+    return render_template('path.html', old_path=os.path.relpath(file.path, constants['working_dir']))
 
 
 @app.route('/scripts/<filename>')
@@ -215,6 +219,32 @@ def edit():
     html_code2 = create_html_list(2, new_root2)
 
     return "ok"
+
+
+@app.route("/new-path", methods=['POST'])
+def move_rename():
+    new_path = request.json['text']
+    file_name = selected[0][:-1]
+    file = get_file_by_name(file_name, tree)
+    file.move(os.path.join(constants['working_dir'], new_path))
+    return "ok"
+
+
+@app.route("/update", methods=['POST'])
+def update():
+    global tree, root1, root2, html_code1, html_code2
+    tree = get_file_tree(constants['working_dir'])
+
+    new_root1 = get_file_by_name(root1.name, tree)
+    root1 = new_root1
+    html_code1 = create_html_list(1, new_root1)
+
+    new_root2 = get_file_by_name(root2.name, tree)
+    root2 = new_root2
+    html_code2 = create_html_list(2, new_root2)
+
+    return {"html1": html_code1, "html2": html_code2}
+
 
 
 if __name__ == '__main__':

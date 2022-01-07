@@ -58,6 +58,9 @@ class File:
         file.write(text)
         file.close()
 
+    def move(self, new_path):
+        os.rename(self.path, new_path)
+
     def get_ancestors(self):
         ancestors = []
         parent = self.parent
