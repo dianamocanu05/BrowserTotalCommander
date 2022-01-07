@@ -23,8 +23,6 @@ def home():
     global working_dir1
     global tree
 
-    # html_code1 = create_html_list(1, tree[0])
-    # html_code2 = create_html_list(2, tree[0])
     return render_template('template.html',
                            list={'list1': html_code1, 'list2': html_code2, 'working_dir': working_dir1})
 
@@ -37,6 +35,12 @@ def send_png(path):
 @app.route('/style/<filename>')
 def send_css(filename):
     return send_from_directory('static/style', filename)
+
+
+@app.route('/editor.html')
+def send_editor():
+    file = get_file_by_name(selected[0][:-1], tree)
+    return render_template('editor.html', text=file.read())
 
 
 @app.route('/scripts/<filename>')
@@ -188,6 +192,27 @@ def add_new_file():
     html_code2 = create_html_list(2, new_root2)
 
     return {"html1": html_code1, "html2": html_code2}
+
+
+@app.route('/edit', methods=['POST'])
+def edit():
+    global tree, root1, root2, html_code1, html_code2
+    text = request.json["text"]
+    file = get_file_by_name(selected[0][:-1], tree)
+    file.write(text)
+
+    tree = get_file_tree(constants['working_dir'])
+
+    new_root1 = get_file_by_name(root1.name, tree)
+    root1 = new_root1
+    html_code1 = create_html_list(1, new_root1)
+
+    new_root2 = get_file_by_name(root2.name, tree)
+    root2 = new_root2
+    html_code2 = create_html_list(2, new_root2)
+
+    return "ok"
+
 
 if __name__ == '__main__':
     app.run(debug=True)

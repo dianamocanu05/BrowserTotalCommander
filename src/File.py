@@ -49,6 +49,15 @@ class File:
     def copy(self, destination):
         copyfile(self.path, destination)
 
+    def read(self):
+        file = open(self.path, "r")
+        return file.read()
+
+    def write(self, text):
+        file = open(self.path, "w")
+        file.write(text)
+        file.close()
+
     def get_ancestors(self):
         ancestors = []
         parent = self.parent

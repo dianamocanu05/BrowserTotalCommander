@@ -13,3 +13,7 @@ def copy_paste(files, destination, tree):
 def add_file(file_path):
     with open(file_path, 'w') as fp:
         pass
+
+
+
+

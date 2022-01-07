@@ -329,10 +329,10 @@ function setOperation(operation){
             add(2);
             break;
         case 'edit1':
-            back(2);
+            edit(1);
             break;
         case 'edit2':
-            back(2);
+            edit(2);
             break;
         default:
             break;
@@ -342,6 +342,18 @@ function setOperation(operation){
 
 function refresh(index){
     alert(selected);
+}
+
+function edit(index){
+    if(selected.length == 1)
+    {
+        var txt_file = selected[0].slice(0,-1);
+        if(txt_file.includes(".txt"))
+        {
+             sendSelectedRequest();
+             window.open('./editor.html',txt_file,'width=600,height=400');
+        }
+    }
 }
 
 function send_new_file(new_file, index){
