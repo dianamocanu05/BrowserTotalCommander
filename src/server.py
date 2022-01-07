@@ -212,8 +212,7 @@ def cwd():
     if str(index) == '1':
         return os.path.join('\\', os.path.relpath(root1.path, start))
     else:
-        return os.path.join('\\', os.path.relpath(root1.path, start))
-
+        return os.path.join('\\', os.path.relpath(root2.path, start))
 
 
 @app.route('/add', methods=['POST'])

@@ -96,8 +96,7 @@ def get_file_by_name_ancestor(name, tree, ancestor):
     :param name: name
     :param tree: tree
     :param ancestor: ancestor
-    :return: file
-    """
+    :return: file    """
     minim = 100
     desired_file = None
     for f in tree:
