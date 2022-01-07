@@ -175,7 +175,7 @@ function highlight(field){
 function unhighlight(field){
     document.getElementById(field).style.color = "rgb(0, 0, 0)";
     var index = selected.indexOf(field);
-    selected.splice(index, index);
+    selected.splice(index, 1);
 }
 
 function sendSelectedRequest(){
@@ -351,6 +351,7 @@ function edit(index){
         if(txt_file.includes(".txt"))
         {
              sendSelectedRequest();
+             selected.splice(0,selected.length);
              window.open('./editor.html',txt_file,'width=600,height=400');
         }
     }
