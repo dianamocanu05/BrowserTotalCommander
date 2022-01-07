@@ -18,6 +18,8 @@ to_copy = []
 index = -1
 
 
+
+
 @app.route('/')
 def home():
     global working_dir1
@@ -147,11 +149,12 @@ def paste():
 
 @app.route('/cwd', methods=['POST'])
 def cwd():
+    start = constants['working_dir']
     index = request.json['index']
     if str(index) == '1':
-        return root1.path
+        return os.path.join('\\', os.path.relpath(root1.path, start))
     else:
-        return root2.path
+        return os.path.join('\\', os.path.relpath(root1.path, start))
 
 
 @app.route('/refresh', methods=['POST'])
