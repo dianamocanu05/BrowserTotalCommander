@@ -8,3 +8,8 @@ def copy_paste(files, destination, tree):
         destination = os.path.join(destination, file_name)
         file = get_file_by_name(file_name, tree)
         file.copy(destination)
+
+
+def add_file(file_path):
+    with open(file_path, 'w') as fp:
+        pass

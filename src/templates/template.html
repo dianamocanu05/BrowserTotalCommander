@@ -29,17 +29,21 @@
                                                           onclick="setOperation('copy1')">Copy</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/paste-file.png"><a id="paste1" class="nav-link" href="#" onclick="setOperation('paste1')">Paste</a>
+                <img src="../media/icons/paste-file.png"><a id="paste1" class="nav-link" href="#"
+                                                            onclick="setOperation('paste1')">Paste</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/delete-file.png"><a id="delete1" class="nav-link" href="#" onclick="setOperation('delete1')">Delete</a>
+                <img src="../media/icons/delete-file.png"><a id="delete1" class="nav-link" href="#"
+                                                             onclick="setOperation('delete1')">Delete</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/move-file.png"><a id="move1" class="nav-link" href="#" onclick="setOperation('move1')">Move
+                <img src="../media/icons/move-file.png"><a id="move1" class="nav-link" href="#"
+                                                           onclick="setOperation('move1')">Move
                 to/Rename</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/add-file.png"><a id="add1" class="nav-link" href="#" onclick="setOperation('add1')">Add
+                <img src="../media/icons/add-file.png"><a id="add1" class="nav-link" href="#"
+                                                          onclick="setOperation('add1')">Add
                 new...</a>
             </li>
             <li class="nav-item">
@@ -47,10 +51,12 @@
                                                            onclick="setOperation('edit1')">Edit</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/back.png"><a id="back1" class="nav-link" href="#" onclick="setOperation('back1')">Back</a>
+                <img src="../media/icons/back.png"><a id="back1" class="nav-link" href="#"
+                                                      onclick="setOperation('back1')">Back</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/where.png"><a class="nav-link" href="#" data-toggle="tooltip" onclick="getCwd(1);"title="">Current
+                <img src="../media/icons/where.png"><a class="nav-link" href="#" data-toggle="tooltip"
+                                                       onclick="getCwd(1);" title="">Current
                 location</a>
             </li>
             <li class="nav-item">
@@ -69,19 +75,23 @@
     <div class="navbar-collapse collapse w-100 dual-collapse2 order-2 order-md-2">
         <ul class="navbar-nav mr-auto text-center">
             <li class="nav-item active">
-                <img src="../media/icons/new-file.png"><a class="nav-link" href="#" onclick="setOperation('copy2')">Copy</a>
+                <img src="../media/icons/new-file.png"><a class="nav-link" href="#"
+                                                          onclick="setOperation('copy2')">Copy</a>
             </li>
             <li class="nav-item">
                 <img src="../media/icons/paste-file.png"><a class="nav-link" href="#" onclick="setOperation('paste2')">Paste</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/delete-file.png"><a class="nav-link" href="#" onclick="setOperation('delete2')">Delete</a>
+                <img src="../media/icons/delete-file.png"><a class="nav-link" href="#"
+                                                             onclick="setOperation('delete2')">Delete</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/move-file.png"><a class="nav-link" href="#" onclick="setOperation('move2')">Move to/Rename</a>
+                <img src="../media/icons/move-file.png"><a class="nav-link" href="#" onclick="setOperation('move2')">Move
+                to/Rename</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/add-file.png"><a class="nav-link" href="#" onclick="setOperation('add2')">Add new...</a>
+                <img src="../media/icons/add-file.png"><a class="nav-link" href="#" onclick="setOperation('add2')">Add
+                new...</a>
             </li>
             <li class="nav-item">
                 <img src="../media/icons/edit-file.png"><a class="nav-link" href="#" onclick="setOperation('edit2')">Edit</a>
@@ -90,7 +100,8 @@
                 <img src="../media/icons/back.png"><a class="nav-link" href="#" onclick="setOperation('back2')">Back</a>
             </li>
             <li class="nav-item">
-                <img src="../media/icons/where.png"><a class="nav-link" href="#" onclick="getCwd(2);"   data-toggle="tooltip" title="">Current
+                <img src="../media/icons/where.png"><a class="nav-link" href="#" onclick="getCwd(2);"
+                                                       data-toggle="tooltip" title="">Current
                 location</a>
             </li>
             <li class="nav-item">
@@ -257,8 +268,13 @@ function delete_file(index){
     xhr.onreadystatechange = function () {
        if (xhr.readyState === 4 && xhr.status === 200) {
             selected.splice(0,selected.length);
-            document.getElementById("list" + index.toString()).innerHTML = "";
-            document.getElementById("list" + index.toString()).innerHTML = this.responseText;
+            var json = JSON.parse(this.responseText);
+            html1 = json.html1;
+            html2 = json.html2;
+            document.getElementById("list1").innerHTML = "";
+            document.getElementById("list1").innerHTML = html1;
+            document.getElementById("list2").innerHTML = "";
+            document.getElementById("list2").innerHTML = html2;
         }
     };
     var data = JSON.stringify({"index": index});
@@ -307,10 +323,10 @@ function setOperation(operation){
             back(1);
             break;
         case 'add1':
-            back(2);
+            add(1);
             break;
         case 'add2':
-            back(2);
+            add(2);
             break;
         case 'edit1':
             back(2);
@@ -326,8 +342,59 @@ function setOperation(operation){
 
 function refresh(index){
     alert(selected);
-
 }
+
+function send_new_file(new_file, index){
+    var xhr = new XMLHttpRequest();
+    var url = "/new-file";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+            var json = JSON.parse(this.responseText);
+            html1 = json.html1;
+            html2 = json.html2;
+            document.getElementById("list1").innerHTML = "";
+            document.getElementById("list1").innerHTML = html1;
+            document.getElementById("list2").innerHTML = "";
+            document.getElementById("list2").innerHTML = html2;
+        }
+    };
+    var data = JSON.stringify({"file": new_file});
+    xhr.send(data);
+}
+function manage_add_file(list, index){
+    var new_li = document.createElement("li");
+    var input = document.createElement("input");
+    input.addEventListener("keyup", function(event) {
+          if (event.keyCode === 13) {
+                send_new_file(input.value, index);
+                list.removeChild(new_li);
+            }
+    });
+    new_li.appendChild(input);
+    list.appendChild(new_li);
+}
+
+
+
+
+function add(index){
+    var xhr = new XMLHttpRequest();
+    var url = "/add";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+       if (xhr.readyState === 4 && xhr.status === 200) {
+            manage_add_file(document.getElementById("list" + index.toString()), index);
+        }
+    };
+    var data = JSON.stringify({"index": index});
+    xhr.send(data);
+}
+
+
+
 
 
 

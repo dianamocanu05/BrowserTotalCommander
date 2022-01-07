@@ -11,6 +11,7 @@ def create_html_list(index, root):
                          ";' ondblclick=\"expand('" + c.name + str(index) + "');\">" + \
                          get_printable_information(c) + "</a></li>\n"
         html_code += "</ul></div>"
+
         return html_code
 
 

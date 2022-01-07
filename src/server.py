@@ -1,9 +1,9 @@
 from src.file_manager import get_file_tree
 from src.utils import create_html_list, get_file_by_name, get_file_by_name_ancestor
-from src.actions import copy_paste
+from src.actions import copy_paste, add_file
 from flask import Flask, render_template, send_from_directory, request
 from src.constants import constants
-import time
+import os
 
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
 working_dir1 = constants['working_dir']
@@ -15,6 +15,7 @@ html_code1 = create_html_list(1, tree[0])
 html_code2 = create_html_list(2, tree[0])
 selected = []
 to_copy = []
+index = -1
 
 
 @app.route('/')
@@ -107,16 +108,15 @@ def delete_file():
 
     tree = get_file_tree(constants['working_dir'])
 
-    if str(index) == '1':
-        new_root1 = get_file_by_name(root1.name, tree)
-        root1 = new_root1
-        html_code1 = create_html_list(1, new_root1)
-        return html_code1
-    else:
-        new_root2 = get_file_by_name(root2.name, tree)
-        root2 = new_root2
-        html_code2 = create_html_list(2, new_root2)
-        return html_code2
+    new_root1 = get_file_by_name(root1.name, tree)
+    root1 = new_root1
+    html_code1 = create_html_list(1, new_root1)
+
+    new_root2 = get_file_by_name(root2.name, tree)
+    root2 = new_root2
+    html_code2 = create_html_list(2, new_root2)
+
+    return {"html1": html_code1, "html2": html_code2}
 
 
 @app.route('/paste', methods=['POST'])
@@ -164,6 +164,30 @@ def refresh():
         html_code2 = create_html_list(2, new_root2)
         return html_code2
 
+
+@app.route('/add', methods=['POST'])
+def add():
+    global index
+    index = request.json['index']
+    return "ok"
+
+
+@app.route('/new-file', methods=['POST'])
+def add_new_file():
+    global index, tree, html_code1, html_code2, root1, root2
+    new_file = request.json["file"]
+    add_file(os.path.join(root1.path, new_file))
+    tree = get_file_tree(constants['working_dir'])
+
+    new_root1 = get_file_by_name(root1.name, tree)
+    root1 = new_root1
+    html_code1 = create_html_list(1, new_root1)
+
+    new_root2 = get_file_by_name(root2.name, tree)
+    root2 = new_root2
+    html_code2 = create_html_list(2, new_root2)
+
+    return {"html1": html_code1, "html2": html_code2}
 
 if __name__ == '__main__':
     app.run(debug=True)
